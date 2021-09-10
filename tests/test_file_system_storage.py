@@ -4,13 +4,6 @@ from unittest import TestCase
 from datetime import datetime
 
 from storages.backends.file_system import FileSystemStorage
-from storages.backends.base import Storage
-
-
-class TestAbstractStorage(TestCase):
-    def test_initialization_raises_exception(self):
-        with pytest.raises(TypeError):
-            Storage()
 
 
 class TestFileSystemStorage(TestCase):
