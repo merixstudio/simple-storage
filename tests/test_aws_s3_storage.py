@@ -5,7 +5,7 @@ from uuid import uuid4
 import pytest
 
 from storages.backends.base import Storage
-from storages.backends.amazon_s3 import amazon_s3_storage
+from storages.backends.amazon_s3 import amazon_s3_storage, AmazonS3Storage
 
 
 class aws_temp_file:
@@ -35,6 +35,14 @@ class TestAWSS3Storage(TestCase):
     @pytest.fixture(autouse=True)
     def init_storage(self, tmpdir):
         self._storage = amazon_s3_storage
+
+    def test_improper_initialization(self):
+        with pytest.raises(Exception):
+            AmazonS3Storage(aws_access_key_id=None, aws_secret_access_key=None, bucket_name=None)
+        with pytest.raises(Exception):
+            AmazonS3Storage(aws_access_key_id="somekey", aws_secret_access_key=None, bucket_name=None)
+        with pytest.raises(Exception):
+            AmazonS3Storage(aws_access_key_id="some_key", aws_secret_access_key="some_secret", bucket_name=None)
 
     def test_file_not_exists(self):
         assert not self._storage.exists("some_non_existent.file")
