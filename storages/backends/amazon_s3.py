@@ -1,7 +1,7 @@
 import logging
 from datetime import datetime
 from os import environ
-from typing import AnyStr
+from typing import AnyStr, Optional
 
 import boto3
 from boto3 import Session
@@ -17,10 +17,16 @@ class AmazonS3Storage(Storage):
 
     def __init__(
         self,
-        aws_access_key_id: str,
-        aws_secret_access_key: str,
-        bucket_name: str,
+        aws_access_key_id: Optional[str],
+        aws_secret_access_key: Optional[str],
+        bucket_name: Optional[str],
     ):
+        if aws_access_key_id is None:
+            raise ValueError("aws_access_key_id can not be None.")
+        if aws_secret_access_key is None:
+            raise ValueError("aws_secret_access_key can not be None.")
+        if bucket_name is None:
+            raise ValueError("bucket_name can not be None.")
         self._session: Session = boto3.Session(
             aws_access_key_id=aws_access_key_id,
             aws_secret_access_key=aws_secret_access_key,
