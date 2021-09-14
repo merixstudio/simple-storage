@@ -42,9 +42,10 @@ jobs:
     - name: Test with pytest
       run: |
         python -m pytest --cov-report=xml --cov=storages/
-    - uses: codecov/codecov-action@v1
+    - uses: codecov/codecov-action@v2
       with:
+        token: ${{ secrets.CODECOV_TOKEN }}
         files: ./coverage.xml
         fail_ci_if_error: true
-        name: trench
+        name: simple-storage
         verbose: true
