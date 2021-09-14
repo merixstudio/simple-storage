@@ -1,7 +1,6 @@
 import logging
 from datetime import datetime
 from os import environ
-from tempfile import SpooledTemporaryFile
 from typing import AnyStr
 
 import boto3
@@ -16,10 +15,15 @@ from storages.backends.base import Storage
 class AmazonS3Storage(Storage):
     _SERVICE_NAME = "s3"
 
-    def __init__(self, aws_access_key_id: str, aws_secret_access_key: str, bucket_name: str):
+    def __init__(
+        self,
+        aws_access_key_id: str,
+        aws_secret_access_key: str,
+        bucket_name: str,
+    ):
         self._session: Session = boto3.Session(
             aws_access_key_id=aws_access_key_id,
-            aws_secret_access_key=aws_secret_access_key
+            aws_secret_access_key=aws_secret_access_key,
         )
         self._s3: ServiceResource = self._session.resource(
             service_name=self._SERVICE_NAME
@@ -27,7 +31,7 @@ class AmazonS3Storage(Storage):
         self._bucket_name = bucket_name
         self._bucket = self._s3.Bucket(self._bucket_name)
 
-    def _get_object(self, name: str) -> object:
+    def _get_object(self, name: str):
         return self._bucket.Object(key=name)
 
     def read(self, name: str, mode: str = "r") -> AnyStr:
@@ -42,9 +46,9 @@ class AmazonS3Storage(Storage):
 
     def exists(self, name: str) -> bool:
         try:
-            self._session.client(
-                service_name=self._SERVICE_NAME
-            ).head_object(Bucket=self._bucket_name, Key=name)
+            self._session.client(service_name=self._SERVICE_NAME).head_object(
+                Bucket=self._bucket_name, Key=name
+            )
             return True
         except ClientError as cause:
             logging.info(cause, exc_info=True)
@@ -54,13 +58,17 @@ class AmazonS3Storage(Storage):
         return self._get_object(name).content_length
 
     def get_created_time(self, name: str) -> datetime:
-        raise NotImplementedError("S3 storage does not provide created time info.")
+        raise NotImplementedError(
+            "S3 storage does not provide created time info."
+        )
 
     def get_modified_time(self, name: str) -> datetime:
         return self._get_object(name).last_modified
 
     def get_access_time(self, name: str) -> datetime:
-        raise NotImplementedError("S3 storage does not provide access time info.")
+        raise NotImplementedError(
+            "S3 storage does not provide access time info."
+        )
 
 
 amazon_s3_storage = AmazonS3Storage(

@@ -1,7 +1,7 @@
 from datetime import datetime
 from os import remove
-from os.path import join, lexists, getsize, getctime, getmtime, getatime
-from typing import Union, AnyStr
+from os.path import getatime, getctime, getmtime, getsize, join, lexists
+from typing import AnyStr, Union
 
 from storages.backends.base import Storage
 
