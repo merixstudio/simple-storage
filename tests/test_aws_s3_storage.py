@@ -1,11 +1,13 @@
-from datetime import datetime, timedelta, tzinfo, timezone
+from datetime import datetime, timedelta
+from os import environ
 from unittest import TestCase
 from uuid import uuid4
 
 import pytest
 
+from storages.backends.amazon_s3 import AmazonS3Storage
 from storages.backends.base import Storage
-from storages.backends.amazon_s3 import amazon_s3_storage, AmazonS3Storage
+from storages.exceptions import ImproperlyConfiguredError
 
 
 class aws_temp_file:
@@ -30,19 +32,33 @@ class aws_temp_file:
 
 
 class TestAWSS3Storage(TestCase):
-    _DATE_TIME_FORMAT = "%Y-%m-%d %H:%M:%S"
-
     @pytest.fixture(autouse=True)
     def init_storage(self, tmpdir):
-        self._storage = amazon_s3_storage
+        self._storage = AmazonS3Storage(
+            aws_access_key_id=environ.get("STORAGES_AWS_ACCESS_KEY_ID"),
+            aws_secret_access_key=environ.get(
+                "STORAGES_AWS_SECRET_ACCESS_KEY"
+            ),
+            bucket_name=environ.get("STORAGES_BUCKET_NAME"),
+        )
 
     def test_improper_initialization(self):
-        with pytest.raises(Exception):
-            AmazonS3Storage(aws_access_key_id=None, aws_secret_access_key=None, bucket_name=None)
-        with pytest.raises(Exception):
-            AmazonS3Storage(aws_access_key_id="somekey", aws_secret_access_key=None, bucket_name=None)
-        with pytest.raises(Exception):
-            AmazonS3Storage(aws_access_key_id="some_key", aws_secret_access_key="some_secret", bucket_name=None)
+        with pytest.raises(ImproperlyConfiguredError):
+            AmazonS3Storage(
+                aws_access_key_id="", aws_secret_access_key="", bucket_name=""
+            )
+        with pytest.raises(ImproperlyConfiguredError):
+            AmazonS3Storage(
+                aws_access_key_id="somekey",
+                aws_secret_access_key="",
+                bucket_name="",
+            )
+        with pytest.raises(ImproperlyConfiguredError):
+            AmazonS3Storage(
+                aws_access_key_id="some_key",
+                aws_secret_access_key="some_secret",
+                bucket_name="",
+            )
 
     def test_file_not_exists(self):
         assert not self._storage.exists("some_non_existent.file")
@@ -57,7 +73,10 @@ class TestAWSS3Storage(TestCase):
 
     def test_file_contains_binary_written_data(self):
         with aws_temp_file(storage=self._storage, binary=True) as temp_file:
-            assert self._storage.read(temp_file, mode="rb") == aws_temp_file.CONTENT_BINARY
+            assert (
+                self._storage.read(temp_file, mode="rb")
+                == aws_temp_file.CONTENT_BINARY
+            )
 
     def test_file_does_not_exist_upon_writing_and_deletion(self):
         with aws_temp_file(storage=self._storage) as temp_file:
@@ -69,14 +88,16 @@ class TestAWSS3Storage(TestCase):
             assert self._storage.size(temp_file) == len(aws_temp_file.CONTENT)
 
     def test_file_creation_time(self):
-        with pytest.raises(Exception):
+        with pytest.raises(NotImplementedError):
             self._storage.get_created_time("any_name.ext")
 
     def test_file_access_time(self):
-        with pytest.raises(Exception):
+        with pytest.raises(NotImplementedError):
             self._storage.get_access_time("any_name.ext")
 
     def test_file_modification_time(self):
         with aws_temp_file(storage=self._storage) as temp_file:
-            modification_time = self._storage.get_modified_time(temp_file).replace(tzinfo=None)
+            modification_time = self._storage.get_modified_time(
+                temp_file
+            ).replace(tzinfo=None)
             assert modification_time - datetime.now() < timedelta(seconds=10)

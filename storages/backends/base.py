@@ -38,3 +38,9 @@ class Storage(ABC):
     @abstractmethod
     def get_access_time(self, name: str) -> datetime:
         pass  # pragma: no cover
+
+
+class StorageBuilder(ABC):
+    @abstractmethod
+    def build(self) -> Storage:
+        pass  # pragma: no cover

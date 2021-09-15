@@ -1,7 +1,6 @@
 import logging
 from datetime import datetime
-from os import environ
-from typing import AnyStr, Optional
+from typing import AnyStr
 
 import boto3
 from boto3 import Session
@@ -10,6 +9,7 @@ from botocore.exceptions import ClientError
 from botocore.response import StreamingBody
 
 from storages.backends.base import Storage
+from storages.exceptions import ImproperlyConfiguredError
 
 
 class AmazonS3Storage(Storage):
@@ -17,16 +17,22 @@ class AmazonS3Storage(Storage):
 
     def __init__(
         self,
-        aws_access_key_id: Optional[str],
-        aws_secret_access_key: Optional[str],
-        bucket_name: Optional[str],
+        aws_access_key_id: str,
+        aws_secret_access_key: str,
+        bucket_name: str,
     ):
-        if aws_access_key_id is None:
-            raise ValueError("aws_access_key_id can not be None.")
-        if aws_secret_access_key is None:
-            raise ValueError("aws_secret_access_key can not be None.")
-        if bucket_name is None:
-            raise ValueError("bucket_name can not be None.")
+        if not aws_access_key_id:
+            raise ImproperlyConfiguredError(
+                name="aws_access_key_id", value=aws_access_key_id
+            )
+        if not aws_secret_access_key:
+            raise ImproperlyConfiguredError(
+                name="aws_secret_access_key", value=aws_secret_access_key
+            )
+        if not bucket_name:
+            raise ImproperlyConfiguredError(
+                name="bucket_name", value=bucket_name
+            )
         self._session: Session = boto3.Session(
             aws_access_key_id=aws_access_key_id,
             aws_secret_access_key=aws_secret_access_key,
@@ -75,10 +81,3 @@ class AmazonS3Storage(Storage):
         raise NotImplementedError(
             "S3 storage does not provide access time info."
         )
-
-
-amazon_s3_storage = AmazonS3Storage(
-    aws_access_key_id=environ.get("AWS_ACCESS_KEY_ID"),
-    aws_secret_access_key=environ.get("AWS_SECRET_ACCESS_KEY"),
-    bucket_name=environ.get("AWS_S3_BUCKET_NAME"),
-)

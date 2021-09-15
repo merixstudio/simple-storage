@@ -4,12 +4,13 @@ from os.path import getatime, getctime, getmtime, getsize, join, lexists
 from typing import AnyStr, Union
 
 from storages.backends.base import Storage
+from storages.exceptions import ImproperlyConfiguredError
 
 
 class FileSystemStorage(Storage):
     def __init__(self, path: str):
         if not path:
-            raise ValueError("path can not be empty")
+            raise ImproperlyConfiguredError(name="path", value=path)
         self._base_path = path
 
     def _path(self, name: str) -> str:
