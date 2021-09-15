@@ -15,9 +15,11 @@ jobs:
     runs-on: ubuntu-latest
     env:
       PYTHONPATH: ./storages
-      AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-      AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-      AWS_S3_BUCKET_NAME: ${{ secrets.AWS_S3_BUCKET_NAME }}
+      STORAGES_AWS_ACCESS_KEY_ID: ${{ secrets.STORAGES_AWS_ACCESS_KEY_ID }}
+      STORAGES_AWS_SECRET_ACCESS_KEY: ${{ secrets.STORAGES_AWS_SECRET_ACCESS_KEY }}
+      STORAGES_BUCKET_NAME: ${{ secrets.STORAGES_BUCKET_NAME }}
+      STORAGES_PATH: ${{ secrets.STORAGES_PATH }}
+      STORAGES_BACKEND: ${{ secrets.STORAGES_BACKEND }}
     strategy:
       matrix:
         python-version: [3.6, 3.7, 3.8, 3.9]
