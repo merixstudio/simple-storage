@@ -1,0 +1,46 @@
+name: test and lint
+
+on:
+  push:
+    branches-ignore:
+      - master
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    env:
+      PYTHONPATH: ./storages
+      STORAGES_AWS_ACCESS_KEY_ID: ${{ secrets.STORAGES_AWS_ACCESS_KEY_ID }}
+      STORAGES_AWS_SECRET_ACCESS_KEY: ${{ secrets.STORAGES_AWS_SECRET_ACCESS_KEY }}
+      STORAGES_BUCKET_NAME: ${{ secrets.STORAGES_BUCKET_NAME }}
+      STORAGES_PATH: ${{ secrets.STORAGES_PATH }}
+      STORAGES_BACKEND: ${{ secrets.STORAGES_BACKEND }}
+    strategy:
+      matrix:
+        python-version: [3.6, 3.7, 3.8, 3.9]
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v2
+        with:
+          python-version: ${{ matrix.python-version }}
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install mypy flake8 pytest pytest-cov pytest-xdist boto3
+      - name: Lint with flake8
+        run: |
+          # stop the build if there are Python syntax errors or undefined names
+          flake8 ./storages/ --count --show-source --statistics
+      - name: Check type hints with mypy
+        run: |
+          mypy ./storages/
+      - name: Test with pytest
+        run: |
+          python -m pytest -n 5 --cov-report=xml --cov=storages/
+      - uses: codecov/codecov-action@v1
+        with:
+          files: ./coverage.xml
+          fail_ci_if_error: true
+          name: simple-storage
+          verbose: true
