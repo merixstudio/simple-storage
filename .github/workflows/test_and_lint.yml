@@ -1,12 +1,10 @@
-name: test and lint
+name: 'Lint and test'
 
 on:
   push:
-    branches-ignore:
-      - master
 
 jobs:
-  test:
+  test-and-lint:
     runs-on: ubuntu-latest
     env:
       PYTHONPATH: ./storages
