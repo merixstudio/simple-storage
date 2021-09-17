@@ -1,8 +1,9 @@
-from pathlib import Path
-
 from setuptools import setup
 
+with open("README.md", "r", encoding="utf-8") as file_handler:
+    long_description = file_handler.read()
+
 setup(
-    long_description=(Path(__file__) / "README.md").read_text(),
+    long_description=long_description,
     long_description_content_type="text/markdown",
 )
