@@ -43,4 +43,9 @@ Now, depending on the storage you want to use, follow the instructions below.
 
 > In case you encounter any problems with finding your AWS credentials please read [this page][1] as a reference.
 
+# Documentation
+
+The documentation is hosted on GitHub Wiki [here][2].
+
 [1]: https://docs.aws.amazon.com/general/latest/gr/aws-sec-cred-types.html "Understanding and getting your AWS credentials"
+[2]: https://github.com/merixstudio/simple-storage/wiki "Simple storage documentation"
