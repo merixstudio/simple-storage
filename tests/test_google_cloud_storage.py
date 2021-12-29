@@ -10,7 +10,7 @@ from storages.backends.base import Storage
 from storages.exceptions import ImproperlyConfiguredError
 
 
-class aws_temp_file:
+class google_cloud_temp_file:
     CONTENT = "Lorem ipsum dolor sit amet..."
     CONTENT_BINARY = b"Binary lorem ipsum dolor sit amet..."
 
@@ -59,31 +59,30 @@ class TestGoogleCloudStorage(TestCase):
             )
 
     def test_file_not_exists(self):
-        print(self._storage.exists("some_non_existent.file"))
         assert not self._storage.exists("some_non_existent.file")
 
     def test_file_exists_upon_writing(self):
-        with aws_temp_file(storage=self._storage) as temp_file:
+        with google_cloud_temp_file(storage=self._storage) as temp_file:
             assert self._storage.exists(temp_file)
 
     def test_file_contains_binary_written_data(self):
-        with aws_temp_file(storage=self._storage, binary=True) as temp_file:
+        with google_cloud_temp_file(storage=self._storage, binary=True) as temp_file:
             assert (
                 self._storage.read(temp_file, mode="rb")
-                == aws_temp_file.CONTENT_BINARY
+                == google_cloud_temp_file.CONTENT_BINARY
             )
 
     def test_file_does_not_exist_upon_writing_and_deletion(self):
-        with aws_temp_file(storage=self._storage) as temp_file:
+        with google_cloud_temp_file(storage=self._storage) as temp_file:
             self._storage.delete(temp_file)
             assert not self._storage.exists(temp_file)
 
     def test_file_size_matches_content_size(self):
-        with aws_temp_file(storage=self._storage) as temp_file:
-            assert self._storage.size(temp_file) == len(aws_temp_file.CONTENT)
+        with google_cloud_temp_file(storage=self._storage) as temp_file:
+            assert self._storage.size(temp_file) == len(google_cloud_temp_file.CONTENT)
 
     def test_file_creation_time(self):
-        with aws_temp_file(storage=self._storage) as temp_file:
+        with google_cloud_temp_file(storage=self._storage) as temp_file:
             creation_time = self._storage.get_created_time(
                 temp_file
             ).replace(tzinfo=None)
@@ -94,7 +93,7 @@ class TestGoogleCloudStorage(TestCase):
             self._storage.get_access_time("any_name.ext")
 
     def test_file_modification_time(self):
-        with aws_temp_file(storage=self._storage) as temp_file:
+        with google_cloud_temp_file(storage=self._storage) as temp_file:
             modification_time = self._storage.get_modified_time(
                 temp_file
             ).replace(tzinfo=None)
