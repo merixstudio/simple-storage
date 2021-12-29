@@ -46,10 +46,10 @@ Now, depending on the storage you want to use, follow the instructions below.
 
 ## Google Cloud Storage
 
-| Environment variable                     | Value                                               |
-|------------------------------------------|-----------------------------------------------------|
-| `STORAGES_BACKEND`                       | `storages.backends.google_cloud.GoogleCloudStorage` |
-| `STORAGES_GOOGLE_CLOUD_CREDENTIALS_PATH` | Path to json file containing your credentials.      |
-| `STORAGES_GOOGLE_CLOUD_BUCKET_NAME`      | The bucket name that you want to use.               |
+| Environment variable                  | Value                                                          |
+|---------------------------------------|----------------------------------------------------------------|
+| `STORAGES_BACKEND`                    | `storages.backends.google_cloud.GoogleCloudStorage`            |
+| `STORAGES_GOOGLE_CLOUD_CREDENTIALS`   | Google Cloud Storage credentials in JSON encoded using Base64. |
+| `STORAGES_GOOGLE_CLOUD_BUCKET_NAME`   | The bucket name that you want to use.                          |
 
 [1]: https://docs.aws.amazon.com/general/latest/gr/aws-sec-cred-types.html "Understanding and getting your AWS credentials"

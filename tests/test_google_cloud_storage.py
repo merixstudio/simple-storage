@@ -38,23 +38,23 @@ class TestGoogleCloudStorage(TestCase):
     @pytest.fixture(autouse=True)
     def init_storage(self, tmpdir):
         self._storage = GoogleCloudStorage(
-            google_cloud_credentials_path=environ.get("STORAGES_GOOGLE_CLOUD_CREDENTIALS_PATH"),
+            google_cloud_credentials=environ.get("STORAGES_GOOGLE_CLOUD_CREDENTIALS"),
             google_cloud_bucket_name=environ.get("STORAGES_GOOGLE_CLOUD_BUCKET_NAME"),
         )
 
     def test_improper_initialization(self):
         with pytest.raises(ImproperlyConfiguredError):
             GoogleCloudStorage(
-                google_cloud_credentials_path="", google_cloud_bucket_name=""
+                google_cloud_credentials="", google_cloud_bucket_name=""
             )
         with pytest.raises(ImproperlyConfiguredError):
             GoogleCloudStorage(
-                google_cloud_credentials_path="somecreds.json",
+                google_cloud_credentials="base64_data",
                 google_cloud_bucket_name=""
             )
         with pytest.raises(ImproperlyConfiguredError):
             GoogleCloudStorage(
-                google_cloud_credentials_path="",
+                google_cloud_credentials="",
                 google_cloud_bucket_name="some_bucket"
             )
 
