@@ -13,6 +13,8 @@ jobs:
       STORAGES_BUCKET_NAME: ${{ secrets.STORAGES_BUCKET_NAME }}
       STORAGES_PATH: ${{ secrets.STORAGES_PATH }}
       STORAGES_BACKEND: ${{ secrets.STORAGES_BACKEND }}
+      STORAGES_GOOGLE_CLOUD_CREDENTIALS: ${{ secrets.STORAGES_GOOGLE_CLOUD_CREDENTIALS }}
+      STORAGES_GOOGLE_CLOUD_BUCKET_NAME: ${{ secrets.STORAGES_GOOGLE_CLOUD_BUCKET_NAME }}
     strategy:
       matrix:
         python-version: [3.6, 3.7, 3.8, 3.9]
