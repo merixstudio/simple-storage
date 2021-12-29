@@ -12,25 +12,27 @@ class GoogleCloudStorage(Storage):
 
     def __init__(
         self,
-        credentials_path: str,
-        bucket_name: str,
+        google_cloud_credentials_path: str,
+        google_cloud_bucket_name: str,
     ):
-        if not credentials_path:
+        if not google_cloud_credentials_path:
             raise ImproperlyConfiguredError(
-                name="credentials_path", value=credentials_path
+                name="credentials_path", value=google_cloud_credentials_path
             )
-        if not bucket_name:
+        if not google_cloud_bucket_name:
             raise ImproperlyConfiguredError(
-                name="bucket_name", value=bucket_name
+                name="bucket_name", value=google_cloud_bucket_name
             )
 
-        self._client = storage.Client.from_service_account_json(credentials_path)
-        self._bucket_name = bucket_name
+        self._client = storage.Client.from_service_account_json(
+            google_cloud_credentials_path
+        )
+        self._bucket_name = google_cloud_bucket_name
         self._bucket = self._client.get_bucket(self._bucket_name)
 
     def read(self, name: str, mode: str = "r") -> AnyStr:
         blob = self._bucket.blob(name)
-        return blob.download_as_bytes() if "b" in mode else blob.download_as_string()
+        return blob.download_as_bytes()
 
     def write(self, name: str, content: AnyStr, mode: str = "a"):
         self._bucket.blob(name).upload_from_string(content)
@@ -39,7 +41,7 @@ class GoogleCloudStorage(Storage):
         self._bucket.blob(name).delete()
 
     def exists(self, name: str) -> bool:
-        return self._bucket.blob.exists()
+        return self._bucket.blob(name).exists()
 
     def size(self, name: str) -> int:
         return self._bucket.get_blob(name).size
