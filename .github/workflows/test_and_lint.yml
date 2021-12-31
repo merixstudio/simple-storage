@@ -6,6 +6,7 @@ on:
     branches:
       - '**'
 
+
 jobs:
   test-and-lint:
     runs-on: ubuntu-latest
