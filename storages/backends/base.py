@@ -28,15 +28,15 @@ class Storage(ABC):
         pass  # pragma: no cover
 
     @abstractmethod
-    def get_created_time(self, name: str) -> datetime:
+    def get_created_time(self, name: str) -> Optional[datetime]:
         pass  # pragma: no cover
 
     @abstractmethod
-    def get_modified_time(self, name: str) -> datetime:
+    def get_modified_time(self, name: str) -> Optional[datetime]:
         pass  # pragma: no cover
 
     @abstractmethod
-    def get_access_time(self, name: str) -> datetime:
+    def get_access_time(self, name: str) -> Optional[datetime]:
         pass  # pragma: no cover
 
 
