@@ -1,6 +1,6 @@
 from abc import ABC, abstractmethod
 from datetime import datetime
-from typing import AnyStr
+from typing import AnyStr, Optional
 
 
 class Storage(ABC):
