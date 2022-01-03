@@ -39,7 +39,7 @@ class TestGoogleCloudStorage(TestCase):
     def init_storage(self, tmpdir):
         self._storage = GoogleCloudStorage(
             google_cloud_credentials=environ.get("STORAGES_GOOGLE_CLOUD_CREDENTIALS"),
-            bucket_name=environ.get("STORAGES_GOOGLE_CLOUD_BUCKET_NAME"),
+            bucket_name=environ.get("STORAGES_BUCKET_NAME"),
         )
 
     def test_improper_initialization(self):
