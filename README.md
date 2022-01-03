@@ -10,6 +10,7 @@ Data storage made simple.
 
 - File system
 - AWS S3
+- Google Cloud Storage
 
 ## Requirements
 
@@ -42,5 +43,14 @@ Now, depending on the storage you want to use, follow the instructions below.
 | `STORAGES_BUCKET_NAME`           | The bucket name that you want to use.         |
 
 > In case you encounter any problems with finding your AWS credentials please read [this page][1] as a reference.
+
+## Google Cloud Storage
+
+| Environment variable                | Value                                                               |
+|-------------------------------------|---------------------------------------------------------------------|
+| `STORAGES_BACKEND`                  | `storages.backends.google_cloud.GoogleCloudStorage`                 |
+| `STORAGES_GOOGLE_CLOUD_CREDENTIALS` | Your Google Cloud Storage credentials in JSON encoded using Base64. |
+| `STORAGES_BUCKET_NAME`              | The bucket name that you want to use.                               |
+
 
 [1]: https://docs.aws.amazon.com/general/latest/gr/aws-sec-cred-types.html "Understanding and getting your AWS credentials"

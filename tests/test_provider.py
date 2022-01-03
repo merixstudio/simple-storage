@@ -6,6 +6,7 @@ from unittest import TestCase
 import pytest
 
 from storages.backends.amazon_s3 import AmazonS3Storage
+from storages.backends.google_cloud import GoogleCloudStorage
 from storages.backends.base import Storage
 from storages.backends.file_system import FileSystemStorage
 from storages.exceptions import MissingEnvironmentVariableError
@@ -81,6 +82,7 @@ class TestEnvironmentVariablesCollector:
 
 class TestDynamicStorageLoader(TestCase):
     _EXPECTED_RESULT = {
+        "storages.backends.google_cloud.GoogleCloudStorage": GoogleCloudStorage,
         "storages.backends.amazon_s3.AmazonS3Storage": AmazonS3Storage,
         "storages.backends.file_system.FileSystemStorage": FileSystemStorage,
     }
@@ -93,6 +95,7 @@ class TestDynamicStorageLoader(TestCase):
 
 class TestStorageProvider(TestCase):
     _EXPECTED_RESULT = {
+        "storages.backends.google_cloud.GoogleCloudStorage": GoogleCloudStorage,
         "storages.backends.amazon_s3.AmazonS3Storage": AmazonS3Storage,
         "storages.backends.file_system.FileSystemStorage": FileSystemStorage,
     }
