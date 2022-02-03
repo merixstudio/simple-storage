@@ -1,6 +1,5 @@
 import os
 import unittest.mock
-from typing import Type
 from unittest import TestCase
 
 import pytest

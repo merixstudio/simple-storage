@@ -5,6 +5,8 @@ from uuid import uuid4
 
 import pytest
 from google.api_core import exceptions
+from google.cloud.exceptions import NotFound
+
 from storages.backends.google_cloud import GoogleCloudStorage
 from storages.backends.base import Storage
 from storages.exceptions import ImproperlyConfiguredError
@@ -39,23 +41,23 @@ class TestGoogleCloudStorage(TestCase):
     def init_storage(self, tmpdir):
         self._storage = GoogleCloudStorage(
             google_cloud_credentials=environ.get("STORAGES_GOOGLE_CLOUD_CREDENTIALS"),
-            bucket_name=environ.get("STORAGES_BUCKET_NAME"),
+            google_cloud_bucket_name=environ.get("STORAGES_GOOGLE_CLOUD_BUCKET_NAME"),
         )
 
     def test_improper_initialization(self):
         with pytest.raises(ImproperlyConfiguredError):
             GoogleCloudStorage(
-                google_cloud_credentials="", bucket_name=""
+                google_cloud_credentials="", google_cloud_bucket_name=""
             )
         with pytest.raises(ImproperlyConfiguredError):
             GoogleCloudStorage(
                 google_cloud_credentials="base64_data",
-                bucket_name=""
+                google_cloud_bucket_name=""
             )
         with pytest.raises(ImproperlyConfiguredError):
             GoogleCloudStorage(
                 google_cloud_credentials="",
-                bucket_name="some_bucket"
+                google_cloud_bucket_name="some_bucket"
             )
 
     def test_file_not_exists(self):
@@ -87,6 +89,10 @@ class TestGoogleCloudStorage(TestCase):
                 temp_file
             ).replace(tzinfo=None)
             assert creation_time - datetime.now() < timedelta(seconds=10)
+
+    def test_file_creation_exception(self):
+        with pytest.raises(NotFound):
+            self._storage.get_created_time("not_existing_file.txt")
 
     def test_file_access_time(self):
         with pytest.raises(NotImplementedError):
