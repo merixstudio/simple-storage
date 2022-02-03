@@ -1,9 +1,9 @@
 import base64
 import json
 from datetime import datetime
-from typing import AnyStr, Union
+from typing import AnyStr
 
-from google.cloud import storage, exceptions
+from google.cloud import storage, exceptions  # type: ignore
 
 from storages.backends.base import Storage
 from storages.exceptions import ImproperlyConfiguredError
@@ -32,7 +32,7 @@ class GoogleCloudStorage(Storage):
         self._bucket_name = google_cloud_bucket_name
         self._bucket = self._client.get_bucket(self._bucket_name)
 
-    def _get_blob(self, name: str) -> Union[storage.Blob, exceptions.NotFound]:
+    def _get_blob(self, name: str) -> storage.Blob:
         blob = self._bucket.get_blob(name)
 
         if blob is None:
@@ -54,16 +54,13 @@ class GoogleCloudStorage(Storage):
         return self._bucket.blob(name).exists()
 
     def size(self, name: str) -> int:
-        blob = self._get_blob(name)
-        return blob.size
+        return self._get_blob(name).size
 
     def get_created_time(self, name: str) -> datetime:
-        blob = self._get_blob(name)
-        return blob.time_created
+        return self._get_blob(name).time_created
 
     def get_modified_time(self, name: str) -> datetime:
-        blob = self._get_blob(name)
-        return blob.updated
+        return self._get_blob(name).updated
 
     def get_access_time(self, name: str) -> datetime:
         raise NotImplementedError(
