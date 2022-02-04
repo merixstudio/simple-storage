@@ -10,6 +10,7 @@ Data storage made simple.
 
 - File system
 - AWS S3
+- Google Cloud Storage
 
 ## Requirements
 
@@ -42,6 +43,14 @@ Now, depending on the storage you want to use, follow the instructions below.
 | `STORAGES_BUCKET_NAME`           | The bucket name that you want to use.         |
 
 > In case you encounter any problems with finding your AWS credentials please read [this page][1] as a reference.
+
+## Google Cloud Storage
+
+| Environment variable                | Value                                                               |
+|-------------------------------------|---------------------------------------------------------------------|
+| `STORAGES_BACKEND`                  | `storages.backends.google_cloud.GoogleCloudStorage`                 |
+| `STORAGES_GOOGLE_CLOUD_CREDENTIALS` | Your Google Cloud Storage credentials in JSON encoded using Base64. |
+| `STORAGES_GOOGLE_CLOUD_BUCKET_NAME` | The bucket name that you want to use.                               |
 
 # Documentation
 
@@ -140,6 +149,6 @@ We are aiming to maintain the **100% test coverage** of this package.
 
 **Thank you** for your contributions! 😁
 
-[1]: https://docs.aws.amazon.com/general/latest/gr/aws-sec-cred-types.html
+[1]: https://docs.aws.amazon.com/general/latest/gr/aws-sec-cred-types.html "Understanding and getting your AWS credentials"
 [2]: https://github.com/merixstudio/simple-storage/wiki
 [3]: https://pypi.org/project/pytest-xdist/
