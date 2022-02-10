@@ -22,17 +22,11 @@ class AmazonS3Storage(Storage):
         aws_bucket_name: str,
     ):
         if not aws_access_key_id:
-            raise ImproperlyConfiguredError(
-                name="aws_access_key_id", value=aws_access_key_id
-            )
+            raise ImproperlyConfiguredError(name="aws_access_key_id")
         if not aws_secret_access_key:
-            raise ImproperlyConfiguredError(
-                name="aws_secret_access_key", value=aws_secret_access_key
-            )
+            raise ImproperlyConfiguredError(name="aws_secret_access_key")
         if not aws_bucket_name:
-            raise ImproperlyConfiguredError(
-                name="aws_bucket_name", value=aws_bucket_name
-            )
+            raise ImproperlyConfiguredError(name="aws_bucket_name")
         self._session: Session = boto3.Session(
             aws_access_key_id=aws_access_key_id,
             aws_secret_access_key=aws_secret_access_key,

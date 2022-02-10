@@ -18,13 +18,9 @@ class GoogleCloudStorage(Storage):
         google_cloud_bucket_name: str,
     ):
         if not google_cloud_credentials:
-            raise ImproperlyConfiguredError(
-                name="credentials_path", value=google_cloud_credentials
-            )
+            raise ImproperlyConfiguredError(name="credentials_path")
         if not google_cloud_bucket_name:
-            raise ImproperlyConfiguredError(
-                name="google_cloud_bucket_name", value=google_cloud_bucket_name
-            )
+            raise ImproperlyConfiguredError(name="google_cloud_bucket_name")
 
         self._client = storage.Client.from_service_account_info(
             json.loads(base64.b64decode(google_cloud_credentials))
