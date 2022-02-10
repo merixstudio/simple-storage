@@ -10,7 +10,7 @@ from storages.exceptions import ImproperlyConfiguredError
 class FileSystemStorage(Storage):
     def __init__(self, path: str):
         if not path:
-            raise ImproperlyConfiguredError(name="path", value=path)
+            raise ImproperlyConfiguredError(name="path")
         self._base_path = path
 
     def _path(self, name: str) -> str:
