@@ -2,6 +2,9 @@ name: 'Lint and test'
 
 on:
   push:
+  pull_request:
+    branches:
+      - '**'
 
 jobs:
   test-and-lint:
