@@ -3,7 +3,7 @@ import json
 from datetime import datetime
 from typing import AnyStr
 
-from google.cloud import storage, exceptions  # type: ignore
+from google.cloud import exceptions, storage  # type: ignore
 
 from storages.backends.base import Storage
 from storages.exceptions import ImproperlyConfiguredError

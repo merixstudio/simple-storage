@@ -7,8 +7,8 @@ import pytest
 from google.api_core import exceptions
 from google.cloud.exceptions import NotFound
 
-from storages.backends.google_cloud import GoogleCloudStorage
 from storages.backends.base import Storage
+from storages.backends.google_cloud import GoogleCloudStorage
 from storages.exceptions import ImproperlyConfiguredError
 
 
@@ -40,8 +40,12 @@ class TestGoogleCloudStorage(TestCase):
     @pytest.fixture(autouse=True)
     def init_storage(self, tmpdir):
         self._storage = GoogleCloudStorage(
-            google_cloud_credentials=environ.get("STORAGES_GOOGLE_CLOUD_CREDENTIALS"),
-            google_cloud_bucket_name=environ.get("STORAGES_GOOGLE_CLOUD_BUCKET_NAME"),
+            google_cloud_credentials=environ.get(
+                "STORAGES_GOOGLE_CLOUD_CREDENTIALS"
+            ),
+            google_cloud_bucket_name=environ.get(
+                "STORAGES_GOOGLE_CLOUD_BUCKET_NAME"
+            ),
         )
 
     def test_improper_initialization(self):
@@ -52,12 +56,12 @@ class TestGoogleCloudStorage(TestCase):
         with pytest.raises(ImproperlyConfiguredError):
             GoogleCloudStorage(
                 google_cloud_credentials="base64_data",
-                google_cloud_bucket_name=""
+                google_cloud_bucket_name="",
             )
         with pytest.raises(ImproperlyConfiguredError):
             GoogleCloudStorage(
                 google_cloud_credentials="",
-                google_cloud_bucket_name="some_bucket"
+                google_cloud_bucket_name="some_bucket",
             )
 
     def test_file_not_exists(self):
@@ -68,7 +72,9 @@ class TestGoogleCloudStorage(TestCase):
             assert self._storage.exists(temp_file)
 
     def test_file_contains_binary_written_data(self):
-        with google_cloud_temp_file(storage=self._storage, binary=True) as temp_file:
+        with google_cloud_temp_file(
+            storage=self._storage, binary=True
+        ) as temp_file:
             assert (
                 self._storage.read(temp_file, mode="rb")
                 == google_cloud_temp_file.CONTENT_BINARY
@@ -81,13 +87,15 @@ class TestGoogleCloudStorage(TestCase):
 
     def test_file_size_matches_content_size(self):
         with google_cloud_temp_file(storage=self._storage) as temp_file:
-            assert self._storage.size(temp_file) == len(google_cloud_temp_file.CONTENT)
+            assert self._storage.size(temp_file) == len(
+                google_cloud_temp_file.CONTENT
+            )
 
     def test_file_creation_time(self):
         with google_cloud_temp_file(storage=self._storage) as temp_file:
-            creation_time = self._storage.get_created_time(
-                temp_file
-            ).replace(tzinfo=None)
+            creation_time = self._storage.get_created_time(temp_file).replace(
+                tzinfo=None
+            )
             assert creation_time - datetime.now() < timedelta(seconds=10)
 
     def test_file_creation_exception(self):

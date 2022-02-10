@@ -45,7 +45,9 @@ class TestAWSS3Storage(TestCase):
     def test_improper_initialization(self):
         with pytest.raises(ImproperlyConfiguredError):
             AmazonS3Storage(
-                aws_access_key_id="", aws_secret_access_key="", aws_bucket_name=""
+                aws_access_key_id="",
+                aws_secret_access_key="",
+                aws_bucket_name="",
             )
         with pytest.raises(ImproperlyConfiguredError):
             AmazonS3Storage(

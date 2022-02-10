@@ -1,6 +1,3 @@
-from typing import Any
-
-
 class StoragesError(Exception):
     pass
 
