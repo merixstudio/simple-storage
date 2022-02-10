@@ -40,7 +40,7 @@ Now, depending on the storage you want to use, follow the instructions below.
 | `STORAGES_BACKEND`               | `storages.backends.amazon_s3.AmazonS3Storage` |
 | `STORAGES_AWS_ACCESS_KEY_ID`     | Your AWS access key ID.                       |
 | `STORAGES_AWS_SECRET_ACCESS_KEY` | Your AWS secret access key.                   |
-| `STORAGES_BUCKET_NAME`           | The bucket name that you want to use.         |
+| `STORAGES_AWS_BUCKET_NAME`       | The bucket name that you want to use.         |
 
 > In case you encounter any problems with finding your AWS credentials please read [this page][1] as a reference.
 

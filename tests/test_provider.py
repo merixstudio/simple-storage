@@ -9,10 +9,12 @@ from storages.backends.google_cloud import GoogleCloudStorage
 from storages.backends.base import Storage
 from storages.backends.file_system import FileSystemStorage
 from storages.exceptions import MissingEnvironmentVariableError
-from storages.provider import (DynamicStorageLoader,
-                               EnvironmentVariablesCollector,
-                               StorageConstructorArgumentsExtractor,
-                               StorageProvider)
+from storages.provider import (
+    DynamicStorageLoader,
+    EnvironmentVariablesCollector,
+    StorageConstructorArgumentsExtractor,
+    StorageProvider,
+)
 
 
 class TestStorageConstructorArgumentsExtractor(TestCase):

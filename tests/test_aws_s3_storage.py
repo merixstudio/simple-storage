@@ -39,25 +39,25 @@ class TestAWSS3Storage(TestCase):
             aws_secret_access_key=environ.get(
                 "STORAGES_AWS_SECRET_ACCESS_KEY"
             ),
-            bucket_name=environ.get("STORAGES_BUCKET_NAME"),
+            aws_bucket_name=environ.get("STORAGES_AWS_BUCKET_NAME"),
         )
 
     def test_improper_initialization(self):
         with pytest.raises(ImproperlyConfiguredError):
             AmazonS3Storage(
-                aws_access_key_id="", aws_secret_access_key="", bucket_name=""
+                aws_access_key_id="", aws_secret_access_key="", aws_bucket_name=""
             )
         with pytest.raises(ImproperlyConfiguredError):
             AmazonS3Storage(
                 aws_access_key_id="somekey",
                 aws_secret_access_key="",
-                bucket_name="",
+                aws_bucket_name="",
             )
         with pytest.raises(ImproperlyConfiguredError):
             AmazonS3Storage(
                 aws_access_key_id="some_key",
                 aws_secret_access_key="some_secret",
-                bucket_name="",
+                aws_bucket_name="",
             )
 
     def test_file_not_exists(self):

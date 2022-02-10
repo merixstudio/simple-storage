@@ -20,15 +20,17 @@
     ```
 5. Having the virtual environment activated, install required dependencies:
     ```shell
-    pip install mypy flake8 pytest pytest-cov pytest-xdist boto3
+    pip install mypy flake8 pytest pytest-cov pytest-xdist boto3 google-cloud-storage
     ```
 6. Set all the required environment variables:
     ```shell
-   export STORAGES_BACKEND=storags.backends.file_system.FileSystemStorage
+   export STORAGES_BACKEND=storages.backends.file_system.FileSystemStorage
    export STORAGES_PATH=.
    export STORAGES_AWS_ACCESS_KEY_ID=YOURAWSACCESSKEYID
    export STORAGES_AWS_SECRET_ACCESS_KEY=YOURAWSSECRETACCESSKEY
-   export STORAGES_BUCKET_NAME=your-bucket-name
+   export STORAGES_AWS_BUCKET_NAME=your-bucket-name
+   export STORAGES_GOOGLE_CLOUD_CREDENTIALS=your-google-cloud-storage-credentials
+   export STORAGES_GOOGLE_CLOUD_BUCKET_NAME=your-google-cloud-bucket-name
     ```
 
 ## Running tests
